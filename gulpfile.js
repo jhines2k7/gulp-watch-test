@@ -1,21 +1,12 @@
-var gulp = require('gulp'),
-    watch = require('gulp-watch'),
-	connect = require('gulp-connect');
+var livereload = require('gulp-livereload'),
+    gulp = require('gulp');
 
-gulp.task('default', ['server', 'reload']);
+gulp.task('watch', function() {
+	var server = livereload();
 
-gulp.task('server', function() {
-    connect.server({
-        livereload: true
+    gulp.watch('css/*.css').on('change', function(file){
+        server.changed(file.path);
     });
 });
 
-gulp.task('reload', function(){
-    gulp.src(['css/*.css'])
-        .pipe(watch())
-        .pipe(connect.reload());
-});
-
-gulp.task('watch', function() {
-	gulp.watch('css/*.css');
-});
+gulp.task('default', ['watch']);
